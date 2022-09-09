@@ -1,0 +1,28 @@
+{
+  "name": "backend-mmm",
+  "version": "1.0.0",
+  "description": "Backend for MMM system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DcextMMM/backend-mmm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DcextMMM/backend-mmm/issues"
+  },
+  "homepage": "https://github.com/DcextMMM/backend-mmm#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "yarn": "^1.22.19"
+  },
+  "devDependencies": {
+    "sucrase": "^3.25.0"
+  }
+}
