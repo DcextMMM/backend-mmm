@@ -1,7 +1,19 @@
 import { Router } from 'express';
 
-const routes = new Router();
+import UserRoutes from './routes/users';
 
-routes.use('/', (req, res) => { res.send('ok') });
+class Routes {
+    constructor() {
+        this.routes = new Router();
 
-export default routes;
+        this.userRoutes = new UserRoutes();
+    }
+
+    setup() {
+        this.routes.use('/', this.userRoutes.setup());
+
+        return this.routes;
+    }
+}
+
+export default Routes;

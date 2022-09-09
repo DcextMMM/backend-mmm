@@ -1,0 +1,16 @@
+{
+    "schema": {
+        "id": "",
+        "nome": "",
+        "email": "",
+        "senha": "",
+        "cpf": "",
+        "telefone": "",
+        "endereço": {
+            "rua": "",
+            "numero": "",
+            "cep": "",
+            "extra": ""
+        }
+    }
+}
