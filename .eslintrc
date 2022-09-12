@@ -64,12 +64,6 @@
 		"quotes": [
 			"error",
 			"single"
-		],
-		"consistent-return": [
-			"error",
-			{
-				"treatUndefinedAsUnspecified": false
-			}
 		]
 	}
 }

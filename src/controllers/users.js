@@ -8,14 +8,25 @@ class Users {
     this.cadastro = this.cadastro.bind(this);
   }
 
-  login(req, res) {
-    return res.json(this.userService.login());
+  async login(req, res) {
+    try {
+      const token = await this.userService.login(req.body);
+
+      return res.json({ token });
+    } catch (error) {
+      return res.json({ error: error });
+    }
   }
 
   async cadastro(req, res) {
-    const user = await this.userService.cadastro(req.body);
+    try {
+      await this.userService.cadastro(req.body);
 
-    return res.json({ user });
+      return res.json({ ok: true });
+    } catch (error) {
+      return res.json({ error });
+    }
+
   }
 }
 

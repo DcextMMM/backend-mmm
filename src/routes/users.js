@@ -9,7 +9,7 @@ class User {
   }
 
   setup() {
-    this.routes.get('/login', this.userController.login);
+    this.routes.post('/login', this.userController.login);
     this.routes.post('/cadastro', this.userController.cadastro);
 
     return this.routes;
