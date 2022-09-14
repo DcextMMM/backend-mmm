@@ -4,7 +4,7 @@ import authConfig from '../config/auth';
 
 export default async (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log(' oa');
+
   if (!authHeader) return res.status(401).json({ error: 'Token does not exist.' });
 
   const [,  token] = authHeader.split(' ');

@@ -93,10 +93,24 @@ export default class Users {
     }
 
     const user = users.data.find(user => user.id === filter.id);
-    console.log(user);
+
     if (!user) {
       throw 'Id does not exist.';
     }
+
+    if (changes.senha) {
+
+      const samePassword = await HashUtils.compare(user.senha, changes.oldPassword);
+
+      if (!samePassword) {
+        throw 'Wrong old password.';
+      }
+      changes.senha = await HashUtils.encrypt(changes.senha);
+    }
+
+    if (changes.email) throw 'Cannot change email.';
+
+    changes = _.omit(changes, ['oldPassword']);
 
     users.data[filter.id - 1] = _.merge(users.data[filter.id - 1], changes);
 
