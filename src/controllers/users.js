@@ -1,3 +1,5 @@
+import { omit } from 'lodash';
+
 import UserService from '../services/users.js';
 
 class Users {
@@ -6,6 +8,7 @@ class Users {
 
     this.login = this.login.bind(this);
     this.cadastro = this.cadastro.bind(this);
+    this.update = this.update.bind(this);
   }
 
   async login(req, res) {
@@ -26,7 +29,22 @@ class Users {
     } catch (error) {
       return res.json({ error });
     }
+  }
 
+  async update(req, res) {
+    try {
+      const filter = {
+        id: req.userId,
+        type: req.body.type
+      };
+      const changes = omit(req.body, ['type']);
+
+      await this.userService.update(filter , changes);
+
+      return res.json({ ok: true });
+    } catch (error) {
+      return res.json({ error });
+    }
   }
 }
 

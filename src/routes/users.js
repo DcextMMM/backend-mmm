@@ -15,6 +15,8 @@ class User {
 
     this.routes.use(authMiddleware);
 
+    this.routes.put('/user', this.userController.update);
+
     return this.routes;
   }
 }

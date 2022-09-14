@@ -74,4 +74,32 @@ export default class Users {
 
     return user;
   }
+
+  async update(filter, changes) {
+    let users;
+
+    if (filter.type === 'agronomo') {
+      users = this.agronomo;
+    } else if (filter.type === 'produtor') {
+      users = this.produtor;
+    } else {
+      throw 'User type does not exist.';
+    }
+
+    const emailExists = changes.email && users.data.some(user => user.email === changes.email);
+
+    if (emailExists) {
+      throw 'EMAIL_ALREDY_EXISTS';
+    }
+
+    const user = users.data.find(user => user.id === filter.id);
+    console.log(user);
+    if (!user) {
+      throw 'Id does not exist.';
+    }
+
+    users.data[filter.id - 1] = _.merge(users.data[filter.id - 1], changes);
+
+    fs.writeFileSync(`src/models/${filter.type}.json`, JSON.stringify(users));
+  }
 }
