@@ -14,7 +14,7 @@ class Users {
 
       return res.json({ token });
     } catch (error) {
-      return res.json({ error: error });
+      return res.json({ error });
     }
   }
 
