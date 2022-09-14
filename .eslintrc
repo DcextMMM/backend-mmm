@@ -38,10 +38,6 @@
 			}
 		],
 		"keyword-spacing": "error",
-		"linebreak-style": [
-			"error",
-			"unix"
-		],
 		"no-alert": "error",
 		"no-trailing-spaces": "error",
 		"arrow-parens": [
