@@ -36,9 +36,18 @@ export default class Users {
       throw 'LOGIN_OR_PASSWORD_WRONG';
     }
 
-    return jwt.sign({ id: user.id }, authConfig.secret, {
-      expiresIn: authConfig.expiration
-    });
+    const { id, nome, email } = user;
+
+    return {
+      user: {
+        id,
+        nome,
+        email
+      },
+      token: jwt.sign({ id: user.id }, authConfig.secret, {
+        expiresIn: authConfig.expiration
+      })
+    };
   }
 
   async cadastro(data) {
@@ -108,12 +117,15 @@ export default class Users {
       changes.senha = await HashUtils.encrypt(changes.senha);
     }
 
-    if (changes.email) throw 'Cannot change email.';
+    if (changes.email)
+      throw 'Cannot change email.';
 
     changes = _.omit(changes, ['oldPassword']);
 
     users.data[filter.id - 1] = _.merge(users.data[filter.id - 1], changes);
 
     fs.writeFileSync(`src/models/${filter.type}.json`, JSON.stringify(users));
+
+    return user;
   }
 }

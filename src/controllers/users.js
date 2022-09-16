@@ -17,17 +17,21 @@ class Users {
 
       return res.json({ token });
     } catch (error) {
-      return res.json({ error });
+      return res.status(400).json({ error });
     }
   }
 
   async cadastro(req, res) {
     try {
-      await this.userService.cadastro(req.body);
+      const { id, nome, email } = await this.userService.cadastro(req.body);
 
-      return res.json({ ok: true });
+      return res.json({
+        id,
+        nome,
+        email
+      });
     } catch (error) {
-      return res.json({ error });
+      return res.status(400).json({ error });
     }
   }
 
@@ -37,13 +41,17 @@ class Users {
         id: req.userId,
         type: req.body.type
       };
-      const changes = omit(req.body, ['type']);
+      req.body = omit(req.body, ['type']);
 
-      await this.userService.update(filter , changes);
+      const { id, nome, email } = await this.userService.update(filter , req.body);
 
-      return res.json({ ok: true });
+      return res.json({
+        id,
+        nome,
+        email
+      });
     } catch (error) {
-      return res.json({ error });
+      return res.status(400).json({ error });
     }
   }
 }

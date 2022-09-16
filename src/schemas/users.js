@@ -5,7 +5,7 @@ export default class Schemas {
   constructor() {
     this.cadastro = Yup.object().shape({
       nome: Yup.string('Invalid format.').required('Name field is mandatory.').max(30, 'Name length greater then 30.'),
-      email: Yup.string('Invalid format.').required('Name field is mandatory.').email('Invalid email.'),
+      email: Yup.string('Invalid format.').required('Email field is mandatory.').email('Invalid email.'),
       senha: Yup.string('Invalid format.').required('Password field is mandatory.').min(6, 'Password length smaller then 6.'),
       cpf: Yup.string('Invalid format.').test('check-cpf', 'Invalid cpf.', cpf => Validator.checkCpf(cpf)),
       telefone: Yup.string('Invalid format.'),
@@ -25,8 +25,8 @@ export default class Schemas {
     });
 
     this.update = Yup.object().shape({
-      nome: Yup.string('Invalid format.').required('Name field is mandatory.').max(30, 'Name length greater then 30.'),
-      email: Yup.string('Invalid format.').required('Name field is mandatory.').email('Invalid email.'),
+      nome: Yup.string('Invalid format.').max(30, 'Name length greater then 30.'),
+      email: Yup.string('Invalid format.').email('Invalid email.'),
       oldPassword: Yup.string('Invalid format.').min(6, 'Password length smaller then 6.'),
       senha: Yup.string('Invalid format.').required('Password field is mandatory.').min(6, 'Password length smaller then 6.')
         .when('oldPassword', (oldPassword, field) =>
