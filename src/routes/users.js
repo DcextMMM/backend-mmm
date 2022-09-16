@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import authMiddleware from '../middlewares/auth';
-import cadastroValidator from '../middlewares/store';
-import loginValidator from '../middlewares/login';
-import updateValidator from '../middlewares/update';
+import Validate from '../middlewares/validate';
 
 import UserController from '../controllers/users';
 
@@ -10,15 +8,16 @@ class User {
   constructor() {
     this.routes = new Router();
     this.userController = new UserController();
+    this.schemaValidator = new Validate();
   }
 
   setup() {
-    this.routes.post('/login', loginValidator, this.userController.login);
-    this.routes.post('/cadastro', cadastroValidator, this.userController.cadastro);
+    this.routes.post('/login', this.schemaValidator.login, this.userController.login);
+    this.routes.post('/cadastro', this.schemaValidator.cadastro, this.userController.cadastro);
 
     this.routes.use(authMiddleware);
 
-    this.routes.put('/user', updateValidator, this.userController.update);
+    this.routes.put('/user', this.schemaValidator.update, this.userController.update);
 
     return this.routes;
   }
