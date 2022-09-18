@@ -1,5 +1,3 @@
-import { omit } from 'lodash';
-
 import UserService from '../services/users.js';
 import Handle from '../utils/handle-response.js';
 
@@ -12,9 +10,9 @@ class Users {
     this.update = this.update.bind(this);
   }
 
-  login(req, res) {
+  async login(req, res) {
     try {
-      const token = this.userService.login(req.body);
+      const token = await this.userService.login(req.data);
 
       Handle.success({ token }, res);
     } catch (error) {
@@ -22,9 +20,9 @@ class Users {
     }
   }
 
-  cadastro(req, res) {
+  async cadastro(req, res) {
     try {
-      const response = this.userService.cadastro(req.body);
+      const response = await this.userService.cadastro(req.data);
 
       Handle.success(response, res);
     } catch (error) {
@@ -32,15 +30,19 @@ class Users {
     }
   }
 
-  update(req, res) {
+  async update(req, res) {
     try {
       const filter = {
         id: req.userId,
-        type: req.body.type
+        type: req.data.type
       };
-      req.body = omit(req.body, ['type']);
+      const data = {
+        ...req.data
+      };
 
-      const response = this.userService.update(filter , req.body);
+      delete data.type;
+
+      const response = await this.userService.update(filter , data);
 
       Handle.success(response, res);
     } catch (error) {

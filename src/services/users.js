@@ -5,16 +5,20 @@ import _ from 'lodash';
 import HashUtils from '../utils/hash';
 import authConfig from '../config/auth';
 import Handle from '../utils/handle-response';
-import agronomo from '../models/agronomo.json';
-import produtor from '../models/produtor.json';
 
 export default class Users {
   constructor() {
-    this.agronomo = agronomo;
-    this.produtor = produtor;
+    this.readDatabase();
   }
 
-  login(data) {
+  readDatabase() {
+    this.agronomo = JSON.parse(fs.readFileSync('src/models/agronomo.json', 'utf8'));
+    this.produtor = JSON.parse(fs.readFileSync('src/models/produtor.json', 'utf8'));
+  }
+
+  async login(data) {
+    this.readDatabase();
+
     let users;
 
     if (data.type === 'produtor') {
@@ -31,7 +35,7 @@ export default class Users {
       throw Handle.exception('LOGIN_OR_PASSWORD_WRONG');
     }
 
-    const samePassword = HashUtils.compare(user.senha, data.senha);
+    const samePassword = await HashUtils.compare(user.senha, data.senha);
 
     if (!samePassword) {
       throw Handle.exception('LOGIN_OR_PASSWORD_WRONG');
@@ -42,10 +46,12 @@ export default class Users {
     });
   }
 
-  cadastro(data) {
+  async cadastro(data) {
+    this.readDatabase();
+
     const user = _.omit(data, ['type']);
 
-    user.senha = HashUtils.encrypt(user.senha);
+    user.senha = await HashUtils.encrypt(user.senha);
 
     if (data.type === 'agronomo') {
       const emailExists = this.agronomo.data.some(user => user.email === data.email);
@@ -76,7 +82,9 @@ export default class Users {
     return { success: true };
   }
 
-  update(filter, changes) {
+  async update(filter, changes) {
+    this.readDatabase();
+
     let users;
 
     if (filter.type === 'agronomo') {
@@ -94,13 +102,13 @@ export default class Users {
     }
 
     if (changes.senha) {
-      const samePassword = HashUtils.compare(user.senha, changes.oldPassword);
+      const samePassword = await HashUtils.compare(user.senha, changes.oldPassword);
 
       if (!samePassword) {
         throw Handle.exception('WRONG_PASSWORD');
       }
 
-      changes.senha = HashUtils.encrypt(changes.senha);
+      changes.senha = await HashUtils.encrypt(changes.senha);
     }
 
     changes = _.omit(changes, ['oldPassword']);
