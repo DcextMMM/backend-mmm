@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import HashUtils from '../utils/hash';
 import authConfig from '../config/auth';
+import Handle from '../utils/handle-response';
 import agronomo from '../models/agronomo.json';
 import produtor from '../models/produtor.json';
 
@@ -13,7 +14,7 @@ export default class Users {
     this.produtor = produtor;
   }
 
-  async login(data) {
+  login(data) {
     let users;
 
     if (data.type === 'produtor') {
@@ -21,19 +22,19 @@ export default class Users {
     } else if (data.type === 'agronomo') {
       users = this.agronomo;
     } else {
-      throw 'WRONG_USER_TYPE';
+      throw Handle.exception('WRONG_USER_TYPE');
     }
 
     const user = users.data.find(user => user.email === data.login);
 
     if (!user) {
-      throw 'LOGIN_OR_PASSWORD_WRONG';
+      throw Handle.exception('LOGIN_OR_PASSWORD_WRONG');
     }
 
-    const samePassword = await HashUtils.compare(user.senha, data.senha);
+    const samePassword = HashUtils.compare(user.senha, data.senha);
 
     if (!samePassword) {
-      throw 'LOGIN_OR_PASSWORD_WRONG';
+      throw Handle.exception('LOGIN_OR_PASSWORD_WRONG');
     }
 
     return jwt.sign({ id: user.id, type: data.type }, authConfig.secret, {
@@ -41,16 +42,16 @@ export default class Users {
     });
   }
 
-  async cadastro(data) {
+  cadastro(data) {
     const user = _.omit(data, ['type']);
 
-    user.senha = await HashUtils.encrypt(user.senha);
+    user.senha = HashUtils.encrypt(user.senha);
 
     if (data.type === 'agronomo') {
       const emailExists = this.agronomo.data.some(user => user.email === data.email);
 
       if (emailExists) {
-        throw 'EMAIL_ALREDY_EXISTS';
+        throw Handle.exception('EMAIL_ALREDY_EXISTS');
       }
 
       user.id = this.agronomo.data.length + 1;
@@ -62,7 +63,7 @@ export default class Users {
       const emailExists = this.produtor.data.some(user => user.email === data.email);
 
       if (emailExists) {
-        throw 'EMAIL_ALREDY_EXISTS';
+        throw Handle.exception('EMAIL_ALREDY_EXISTS');
       }
 
       user.id = this.produtor.data.length + 1;
@@ -72,10 +73,10 @@ export default class Users {
       fs.writeFileSync('src/models/produtor.json', JSON.stringify(this.produtor));
     }
 
-    return user;
+    return { success: true };
   }
 
-  async update(filter, changes) {
+  update(filter, changes) {
     let users;
 
     if (filter.type === 'agronomo') {
@@ -83,40 +84,30 @@ export default class Users {
     } else if (filter.type === 'produtor') {
       users = this.produtor;
     } else {
-      throw 'User type does not exist.';
-    }
-
-    const emailExists = changes.email && users.data.some(user => user.email === changes.email);
-
-    if (emailExists) {
-      throw 'EMAIL_ALREDY_EXISTS';
+      throw Handle.exception('WRONG_USER_TYPE');
     }
 
     const user = users.data.find(user => user.id === filter.id);
 
     if (!user) {
-      throw 'Id does not exist.';
+      throw Handle.exception('NOT_FOUND');
     }
 
     if (changes.senha) {
-
-      const samePassword = await HashUtils.compare(user.senha, changes.oldPassword);
+      const samePassword = HashUtils.compare(user.senha, changes.oldPassword);
 
       if (!samePassword) {
-        throw 'Wrong old password.';
+        throw Handle.exception('WRONG_PASSWORD');
       }
-      changes.senha = await HashUtils.encrypt(changes.senha);
+
+      changes.senha = HashUtils.encrypt(changes.senha);
     }
 
-    if (changes.email)
-      throw 'Cannot change email.';
-
     changes = _.omit(changes, ['oldPassword']);
-
     users.data[filter.id - 1] = _.merge(users.data[filter.id - 1], changes);
 
     fs.writeFileSync(`src/models/${filter.type}.json`, JSON.stringify(users));
 
-    return user;
+    return { success: true };
   }
 }

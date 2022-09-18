@@ -1,6 +1,7 @@
 import { omit } from 'lodash';
 
 import UserService from '../services/users.js';
+import Handle from '../utils/handle-response.js';
 
 class Users {
   constructor() {
@@ -11,31 +12,27 @@ class Users {
     this.update = this.update.bind(this);
   }
 
-  async login(req, res) {
+  login(req, res) {
     try {
-      const token = await this.userService.login(req.body);
+      const token = this.userService.login(req.body);
 
-      return res.json({ token });
+      Handle.success({ token }, res);
     } catch (error) {
-      return res.status(400).json({ error });
+      Handle.error(error, res);
     }
   }
 
-  async cadastro(req, res) {
+  cadastro(req, res) {
     try {
-      const { id, nome, email } = await this.userService.cadastro(req.body);
+      const response = this.userService.cadastro(req.body);
 
-      return res.json({
-        id,
-        nome,
-        email
-      });
+      Handle.success(response, res);
     } catch (error) {
-      return res.status(400).json({ error });
+      Handle.error(error, res);
     }
   }
 
-  async update(req, res) {
+  update(req, res) {
     try {
       const filter = {
         id: req.userId,
@@ -43,15 +40,11 @@ class Users {
       };
       req.body = omit(req.body, ['type']);
 
-      const { id, nome, email } = await this.userService.update(filter , req.body);
+      const response = this.userService.update(filter , req.body);
 
-      return res.json({
-        id,
-        nome,
-        email
-      });
+      Handle.success(response, res);
     } catch (error) {
-      return res.status(400).json({ error });
+      Handle.error(error, res);
     }
   }
 }

@@ -9,23 +9,23 @@ class Product {
     this.create = this.create.bind(this);
   }
 
-  async list(req, res) {
+  list(req, res) {
     try {
-      let response;
+      let product;
 
       if (req.params && req.params.id) {
-        response = this.productService.find(req.params);
+        product = this.productService.find(req.params);
       } else {
-        response = this.productService.list(req.query);
+        product = this.productService.list(req.query);
       }
 
-      Handle.success(response, res);
+      Handle.success(product, res);
     } catch (error) {
       Handle.error(error, res);
     }
   }
 
-  async create(req, res) {
+  create(req, res) {
     try {
       const response = this.productService.create(req.body, { id: req.userId, type: req.userType });
 
