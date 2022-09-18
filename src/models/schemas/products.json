@@ -1,0 +1,11 @@
+{
+  "schema": {
+      "id": "",
+      "nome": "",
+      "preco": "",
+      "quantidade": "",
+      "data_colheita": "",
+      "produtor_id": "",
+      "vendido": ""
+  }
+}

@@ -36,18 +36,9 @@ export default class Users {
       throw 'LOGIN_OR_PASSWORD_WRONG';
     }
 
-    const { id, nome, email } = user;
-
-    return {
-      user: {
-        id,
-        nome,
-        email
-      },
-      token: jwt.sign({ id: user.id }, authConfig.secret, {
-        expiresIn: authConfig.expiration
-      })
-    };
+    return jwt.sign({ id: user.id, type: data.type }, authConfig.secret, {
+      expiresIn: authConfig.expiration
+    });
   }
 
   async cadastro(data) {
