@@ -60,7 +60,7 @@ export default class Users {
         throw Handle.exception('EMAIL_ALREDY_EXISTS');
       }
 
-      user.id = this.agronomo.data.length + 1;
+      user.id = this.agronomo.data.length ? this.produtor.data.at(-1).id + 1 : 1;
 
       this.agronomo.data.push(user);
 
@@ -72,7 +72,7 @@ export default class Users {
         throw Handle.exception('EMAIL_ALREDY_EXISTS');
       }
 
-      user.id = this.produtor.data.length + 1;
+      user.id = this.produtor.data.length ? this.produtor.data.at(-1).id + 1 : 1;
 
       this.produtor.data.push(user);
 
