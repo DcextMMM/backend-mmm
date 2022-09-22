@@ -23,8 +23,8 @@ const schemas = {
       name: string('Invalid format.'),
       priceLower: number('Invalid format.').positive('Invalid price.'),
       priceUpper: number('Invalid format.').positive('Invalid price.'),
-      dateLower: date('Invalid format.').date(new Date(), 'Invalid date.'),
-      dateUpper: date('Invalid format.').date(new Date(), 'Invalid date.'),
+      dateLower: date('Invalid format.').min(new Date(), 'Invalid date.'),
+      dateUpper: date('Invalid format.').min(new Date(), 'Invalid date.'),
     })
   }
 };
