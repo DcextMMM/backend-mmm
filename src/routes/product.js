@@ -14,8 +14,8 @@ class Product {
   setup() {
     this.routes.use(authMiddleware);
 
-    this.routes.get('/', this.productController.list);
-    this.routes.get('/:id', this.productController.list);
+    this.routes.get('/', SchemaValidator.validate(productSchema.list),this.productController.list);
+    this.routes.get('/:id', SchemaValidator.validate(productSchema.list),this.productController.list);
     this.routes.post('/', SchemaValidator.validate(productSchema.create), this.productController.create);
 
     return this.routes;
