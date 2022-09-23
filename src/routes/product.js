@@ -15,9 +15,9 @@ class Product {
     this.routes.use(authMiddleware);
 
     this.routes.get('/', SchemaValidator.validate(productSchema.list),this.productController.list);
-    this.routes.get('/:id', SchemaValidator.validate(productSchema.list),this.productController.list);
+    this.routes.get('/:id', SchemaValidator.validate(productSchema.find),this.productController.list);
     this.routes.post('/', SchemaValidator.validate(productSchema.create), this.productController.create);
-    this.routes.delete('/:id', this.productController.delete);
+    this.routes.delete('/:id', SchemaValidator.validate(productSchema.delete),this.productController.delete);
 
     return this.routes;
   }

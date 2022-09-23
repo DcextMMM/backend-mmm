@@ -53,7 +53,7 @@ class Users {
 
   async delete(req, res) {
     try {
-      const response = this.userService.delete({ id: req.userId, type: req.userType });
+      const response = await this.userService.delete({ id: req.userId, type: req.userType });
       Handle.success(response, res);
     } catch (error) {
       Handle.error(error, res);

@@ -69,6 +69,7 @@ export default class Product {
 
     this.products.data.push(data);
     fs.writeFileSync('src/models/products.json', JSON.stringify(this.products));
+    return { sucess: true };
   }
 
   delete(filter, meta) {
@@ -84,5 +85,6 @@ export default class Product {
 
     this.products.data.splice(this.products.data.indexOf(product), 1);
     fs.writeFileSync('src/models/products.json', JSON.stringify(this.products));
+    return { sucess: true };
   }
 }

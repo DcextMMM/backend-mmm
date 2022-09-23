@@ -3,7 +3,6 @@ import {
   string,
   number,
   date,
-  boolean,
 } from 'yup';
 
 
@@ -13,24 +12,33 @@ const schemas = {
       nome: string('Invalid format.').required('Name field is mandatory.'),
       preco: number('Invalid format.').required('Price field is mandatory.'),
       quantidade: number('Invalid format.').required('Amount field is mandatory.'),
-      data_colheita: date('Invalid format.').required('Collection date is mandatory.').min(new Date),
-      produtor_id: string('Invalid format.').required('Produtor id is mandatory'),
-      vendido: boolean('Invalid format.').required('Status is mandatory.')
-    })
+      data_colheita: date('Invalid format.').required('Collection date is mandatory.').min(new Date)
+    }).noUnknown()
   },
   list: {
-    body: object().shape({
+    query: object().shape({
       name: string('Invalid format.'),
       priceLower: number('Invalid format.').positive('Invalid price.'),
       priceUpper: number('Invalid format.').positive('Invalid price.'),
-      dateLower: date('Invalid format.').min(new Date(), 'Invalid date.'),
-      dateUpper: date('Invalid format.').min(new Date(), 'Invalid date.'),
+      dateLower: date('Invalid format.'),
+      dateUpper: date('Invalid format.'),
+    }).noUnknown()
+  },
+  find: {
+    params: object().shape({
       id: number('Invalid format').positive('Invalid id.')
-    })
+    }).noUnknown()
+  },
+  delete: {
+    params: object().shape({
+      id: number('Invalid format').positive('Invalid id.')
+    }).noUnknown()
   }
 };
 
 export default {
   create: object(schemas.create),
-  list: object(schemas.list)
+  list: object(schemas.list),
+  find: object(schemas.find),
+  delete: object(schemas.delete)
 };

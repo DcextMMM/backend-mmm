@@ -10,14 +10,14 @@ class Product {
     this.delete = this.delete.bind(this);
   }
 
-  list(req, res) {
+  async list(req, res) {
     try {
       let product;
 
       if (req.params && req.params.id) {
-        product = this.productService.find(req.params);
+        product = await this.productService.find(req.params);
       } else {
-        product = this.productService.list(req.query);
+        product = await this.productService.list(req.query);
       }
 
       Handle.success(product, res);
@@ -26,9 +26,9 @@ class Product {
     }
   }
 
-  create(req, res) {
+  async create(req, res) {
     try {
-      const response = this.productService.create(req.body, { id: req.userId, type: req.userType });
+      const response = await this.productService.create(req.body, { id: req.userId, type: req.userType });
 
       Handle.success(response, res);
     } catch (error) {
@@ -36,9 +36,9 @@ class Product {
     }
   }
 
-  delete(req, res) {
+  async delete(req, res) {
     try {
-      const response = this.productService.delete(req.params, { id: req.userId, type: req.userType });
+      const response = await this.productService.delete(req.params, { id: req.userId, type: req.userType });
 
       Handle.success(response, res);
     } catch (error) {
