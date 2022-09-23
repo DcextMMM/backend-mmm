@@ -118,4 +118,27 @@ export default class Users {
 
     return { success: true };
   }
+
+  async delete(filter) {
+    this.readDatabase();
+    let users;
+
+    if (filter.type === 'agronomo') {
+      users = this.agronomo;
+    } else if (filter.type === 'produtor') {
+      users = this.produtor;
+    } else {
+      throw Handle.exception('WRONG_USER_TYPE');
+    }
+
+
+
+    const user = users.data.find(user => user.id === ~~filter.id);
+    if (!user) throw Handle.exception('USER_NOT_EXIST');
+    users.data.splice(this.produtor.data.indexOf(user), 1);
+
+    fs.writeFileSync(`src/models/${filter.type}.json`, JSON.stringify(users));
+
+    return { sucess: true };
+  }
 }
