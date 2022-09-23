@@ -12,18 +12,24 @@ export default class Product {
   }
 
   listFiltered(filter) {
-    return this.products.data.filter(product => {
-      const dateLower = filter.dateLower && filter.dateLower ? moment(filter.dateLower, 'DD/MM/YYYY') : moment();
-      const dateUpper = filter.dateUpper && filter.dateUpper ? moment(filter.dateUpper, 'DD/MM/YYYY') : moment();
+    const productsFiltered = this.products.data.filter(product => {
+      const dateLower = filter.dateLower ? moment(filter.dateLower, 'YYYY-MM-DD') : moment();
+      const dateUpper = filter.dateUpper ? moment(filter.dateUpper, 'YYYY-MM-DD') : moment();
 
       const filterName = filter.name ? product.nome.includes(filter.name) : true;
       const filterPrice = ~~filter.priceLower || ~~filter.priceUpper ? product.preco >= (~~filter.priceLower || 0) && product.preco <= (~~filter.priceUpper || 100000000) : true;
-      const filterDate = dateLower || dateUpper ? moment(product.data_colheita, 'DD/MM/YYYY').isBetween(dateLower, dateUpper, 'days', '[]') : true;
+      const filterDate = dateLower || dateUpper ? moment(product.data_colheita, 'YYYY-MM-DD').isBetween(dateLower, dateUpper, 'days', '[]') : true;
 
       if (filterName && filterPrice && filterDate) {
         return product;
       }
     });
+
+    if (!productsFiltered.length) {
+      throw Handle.exception('NO_PRODUCTS');
+    }
+
+    return productsFiltered;
   }
 
   list(filter) {
@@ -47,7 +53,7 @@ export default class Product {
       throw Handle.exception('NO_PRODUCTS');
     }
 
-    const product = this.products.data.find(product => product.id = ~~filter.id);
+    const product = this.products.data.find(product => product.id === ~~filter.id);
 
     if (!product) {
       throw Handle.exception('NOT_FOUND');
@@ -79,6 +85,10 @@ export default class Product {
     this.readDatabase();
 
     const product = this.products.data.find(product => product.id === ~~filter.id);
+
+    if (!product) {
+      throw Handle.exception('NOT_FOUND');
+    }
 
     if (product.produtor_id !== meta.id)
       throw Handle.exception('UNAUTHORIZED_ACCESSS');

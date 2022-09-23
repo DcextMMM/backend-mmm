@@ -2,7 +2,7 @@ import {
   object,
   string,
   number,
-  date,
+  date
 } from 'yup';
 
 
@@ -21,15 +21,10 @@ const schemas = {
       priceLower: number('Invalid format.').positive('Invalid price.'),
       priceUpper: number('Invalid format.').positive('Invalid price.'),
       dateLower: date('Invalid format.'),
-      dateUpper: date('Invalid format.'),
+      dateUpper: date('Invalid format.')
     }).noUnknown()
   },
   find: {
-    params: object().shape({
-      id: number('Invalid format').positive('Invalid id.')
-    }).noUnknown()
-  },
-  delete: {
     params: object().shape({
       id: number('Invalid format').positive('Invalid id.')
     }).noUnknown()
@@ -40,5 +35,5 @@ export default {
   create: object(schemas.create),
   list: object(schemas.list),
   find: object(schemas.find),
-  delete: object(schemas.delete)
+  delete: object(schemas.find)
 };

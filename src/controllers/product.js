@@ -14,10 +14,10 @@ class Product {
     try {
       let product;
 
-      if (req.params && req.params.id) {
-        product = await this.productService.find(req.params);
+      if (req.filter && req.filter.id) {
+        product = this.productService.find(req.filter);
       } else {
-        product = await this.productService.list(req.query);
+        product = this.productService.list(req.filter);
       }
 
       Handle.success(product, res);
@@ -28,7 +28,7 @@ class Product {
 
   async create(req, res) {
     try {
-      const response = await this.productService.create(req.body, { id: req.userId, type: req.userType });
+      const response = this.productService.create(req.data, { id: req.userId, type: req.userType });
 
       Handle.success(response, res);
     } catch (error) {
@@ -38,7 +38,7 @@ class Product {
 
   async delete(req, res) {
     try {
-      const response = await this.productService.delete(req.params, { id: req.userId, type: req.userType });
+      const response = this.productService.delete(req.filter, { id: req.userId, type: req.userType });
 
       Handle.success(response, res);
     } catch (error) {
