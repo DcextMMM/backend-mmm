@@ -7,6 +7,7 @@ class Product {
 
     this.list = this.list.bind(this);
     this.create = this.create.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   list(req, res) {
@@ -28,6 +29,16 @@ class Product {
   create(req, res) {
     try {
       const response = this.productService.create(req.body, { id: req.userId, type: req.userType });
+
+      Handle.success(response, res);
+    } catch (error) {
+      Handle.error(error, res);
+    }
+  }
+
+  delete(req, res) {
+    try {
+      const response = this.productService.delete(req.params, { id: req.userId, type: req.userType });
 
       Handle.success(response, res);
     } catch (error) {

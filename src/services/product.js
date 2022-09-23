@@ -65,9 +65,24 @@ export default class Product {
 
     data.vendido = false;
     data.produtor_id = meta.id;
-    data.id = this.products.data.length + 1;
+    data.id = this.products.data.length ? this.products.data.at(-1).id + 1 : 1;
 
     this.products.data.push(data);
+    fs.writeFileSync('src/models/products.json', JSON.stringify(this.products));
+  }
+
+  delete(filter, meta) {
+    if (meta.type !== 'produtor')
+      throw Handle.exception('UNAUTHORIZED_ACCESSS');
+
+    this.readDatabase();
+
+    const product = this.products.data.find(product => product.id === ~~filter.id);
+
+    if (product.produtor_id !== meta.id)
+      throw Handle.exception('UNAUTHORIZED_ACCESSS');
+
+    this.products.data.splice(this.products.data.indexOf(product), 1);
     fs.writeFileSync('src/models/products.json', JSON.stringify(this.products));
   }
 }
