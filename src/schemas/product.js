@@ -35,5 +35,6 @@ export default {
   create: object(schemas.create),
   list: object(schemas.list),
   find: object(schemas.find),
-  delete: object(schemas.find)
+  delete: object(schemas.find),
+  request: object(schemas.find)
 };

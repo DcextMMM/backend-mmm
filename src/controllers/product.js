@@ -8,6 +8,7 @@ class Product {
     this.list = this.list.bind(this);
     this.create = this.create.bind(this);
     this.delete = this.delete.bind(this);
+    this.request = this.request.bind(this);
   }
 
   async list(req, res) {
@@ -40,6 +41,15 @@ class Product {
     try {
       const response = this.productService.delete(req.filter, { id: req.userId, type: req.userType });
 
+      Handle.success(response, res);
+    } catch (error) {
+      Handle.error(error, res);
+    }
+  }
+
+  async request(req, res) {
+    try {
+      const response = this.productService.request(req.filter, { id: req.userId, type: req.userType });
       Handle.success(response, res);
     } catch (error) {
       Handle.error(error, res);
