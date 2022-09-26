@@ -36,5 +36,6 @@ export default {
   list: object(schemas.list),
   find: object(schemas.find),
   delete: object(schemas.find),
-  request: object(schemas.find)
+  request: object(schemas.find),
+  listRequests: object(schemas.list)
 };

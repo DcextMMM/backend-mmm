@@ -130,4 +130,18 @@ export default class Product {
 
     return { sucess: true };
   }
+
+  listRequests(meta) {
+    if (meta.type !== 'agronomo')
+      throw Handle.exception('UNAUTHORIZED_ACESS');
+
+    this.readDatabase();
+
+    const requests = this.requests.data.filter(request => request.agronomo_id === ~~meta.id);
+    console.log(requests);
+    if (!requests.length)
+      throw Handle.exception('NO_REQUESTS');
+
+    return requests;
+  }
 }

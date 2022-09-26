@@ -19,6 +19,7 @@ class Product {
     this.routes.post('/', SchemaValidator.validate(productSchema.create), this.productController.create);
     this.routes.delete('/:id', SchemaValidator.validate(productSchema.delete),this.productController.delete);
     this.routes.post('/:id', SchemaValidator.validate(productSchema.request),this.productController.request);
+
     return this.routes;
   }
 }
