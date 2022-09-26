@@ -1,20 +1,22 @@
 import { Router } from 'express';
 
-import productSchema from '../schemas/product';
-import ProductController from '../controllers/product';
+import requestSchema from '../schemas/request';
+import RequestController from '../controllers/request';
 import authMiddleware from '../middlewares/auth';
 import SchemaValidator from '../middlewares/schema-validator';
 
 class Requests {
   constructor() {
     this.routes = new Router();
-    this.productController = new ProductController();
+    this.requestController = new RequestController();
   }
 
   setup() {
     this.routes.use(authMiddleware);
 
-    this.routes.get('/', SchemaValidator.validate(productSchema.listRequests), this.productController.listRequests);
+    this.routes.post('/:id', SchemaValidator.validate(requestSchema.create), this.requestController.create);
+    this.routes.get('/', SchemaValidator.validate(requestSchema.list), this.requestController.list);
+    this.routes.get('/:id', SchemaValidator.validate(requestSchema.find), this.requestController.list);
 
     return this.routes;
   }
