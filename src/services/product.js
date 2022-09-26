@@ -1,7 +1,7 @@
 import fs from 'fs';
 import moment from 'moment';
 import Handle from '../utils/handle-response.js';
-// import _ from 'lodash';
+import _ from 'lodash';
 
 export default class Product {
   constructor() {
@@ -100,6 +100,16 @@ export default class Product {
     return { sucess: true };
   }
 
+  createRequest(product, meta) {
+    const request = _.omit(product, 'vendido');
+    request.product_id = product.id;
+    request.id = this.requests.data.length ? this.requests.data.at(-1).id + 1 : 1;
+    request.agronomo_id = meta.id;
+
+    this.requests.data.push(request);
+    fs.writeFileSync('src/models/requests.json', JSON.stringify(this.requests));
+  }
+
   request(filter, meta) {
     if (meta.type !== 'agronomo')
       throw Handle.exception('UNAUTHORIZED_ACESS');
@@ -116,13 +126,7 @@ export default class Product {
     product.vendido = true;
     fs.writeFileSync('src/models/products.json', JSON.stringify(this.products));
 
-    // const request = _.omit(product, 'vendido');
-    // request.product_id = product.id;
-    // request.id = this.requests.data.length ? this.requests.data.at(-1).id + 1 : 1;
-    // request.agronomo_id = meta.id;
-
-    // this.requests.data.push(request);
-    // fs.writeFileSync('src/models/requests.json', JSON.stringify(this.requests));
+    this.createRequest(product, meta);
 
     return { sucess: true };
   }
