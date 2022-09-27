@@ -8,6 +8,7 @@ class Request {
 
     this.create = this.create.bind(this);
     this.list = this.list.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   async create(req, res) {
@@ -30,6 +31,15 @@ class Request {
       }
 
       Handle.success(request, res);
+    } catch (error) {
+      Handle.error(error, res);
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const response = this.requestService.delete(req.filter, { id: req.userId, type: req.userType });
+      Handle.success(response, res);
     } catch (error) {
       Handle.error(error, res);
     }

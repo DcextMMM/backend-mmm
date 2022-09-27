@@ -92,4 +92,28 @@ export default class Request {
 
     return request;
   }
+
+  delete(filter, meta) {
+    if (meta.type !== 'agronomo' || filter.id !== meta.id)
+      throw Handle.exception('UNAUTHORIZED_ACESS');
+
+    this.readDatabase();
+
+    const request = this.requests.data.find(request => request.id === ~~filter.id);
+
+    const product = this.products.data.find(product => product.id === request.product_id);
+
+    if (!product || !request)
+      throw Handle.exception('NOT_FOUND');
+
+    product.vendido = false;
+
+    fs.writeFileSync('src/models/products.json', JSON.stringify(this.products));
+
+    this.requests.data.splice(this.requests.data.indexOf(request), 1);
+
+    fs.writeFileSync('src/models/requests.json', JSON.stringify(this.requests));
+
+    return { sucess: true };
+  }
 }

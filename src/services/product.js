@@ -18,8 +18,9 @@ export default class Product {
       const filterName = filter.name ? product.nome.includes(filter.name) : true;
       const filterPrice = ~~filter.priceLower || ~~filter.priceUpper ? product.preco >= (~~filter.priceLower || 0) && product.preco <= (~~filter.priceUpper || 100000000) : true;
       const filterDate = dateLower || dateUpper ? moment(product.data_colheita, 'YYYY-MM-DD').isBetween(dateLower, dateUpper, 'days', '[]') : true;
+      const filterProdutor = filter.produtor_id ? product.produtor_id === filter.produtor_id : true;
 
-      if (filterName && filterPrice && filterDate) {
+      if (filterName && filterPrice && filterDate && filterProdutor) {
         return product;
       }
     });
