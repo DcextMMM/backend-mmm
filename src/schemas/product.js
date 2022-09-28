@@ -21,7 +21,8 @@ const schemas = {
       priceLower: number('Invalid format.').positive('Invalid price.'),
       priceUpper: number('Invalid format.').positive('Invalid price.'),
       dateLower: date('Invalid format.'),
-      dateUpper: date('Invalid format.')
+      dateUpper: date('Invalid format.'),
+      produtor_id: number('Invalid format.').positive('Invalid id.')
     }).noUnknown()
   },
   find: {
