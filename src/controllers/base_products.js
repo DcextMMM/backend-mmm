@@ -5,12 +5,18 @@ class BaseProducts {
   constructor() {
     this.baseProductsServices = new BaseProductsServices();
 
-    this.listAll = this.listAll.bind(this);
+    this.list = this.list.bind(this);
   }
 
-  async listAll(req, res) {
+  async list(req, res) {
     try {
-      const response = this.baseProductsServices.listAll(req.userType);
+      let response;
+
+      if (req.filter && req.filter.id) {
+        response = this.baseProductsServices.find(req.filter);
+      } else {
+        response = this.baseProductsServices.list({ type: req.userType, productType: req.filter.productType });
+      }
 
       Handle.success(response, res);
     } catch (error) {
