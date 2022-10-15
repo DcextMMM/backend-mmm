@@ -1,18 +1,18 @@
 import { Router } from 'express';
 
-import ProductController from '../controllers/product';
+import BaseProductsControllers from '../controllers/base_products';
 import authMiddleware from '../middlewares/auth';
 
 class BaseProducts {
   constructor() {
     this.routes = Router();
-    this.productController = new ProductController();
+    this.baseProductsControllers = new BaseProductsControllers();
   }
 
   setup() {
     this.routes.use(authMiddleware);
 
-    this.routes.get('/', this.productController.listBaseProducts);
+    this.routes.get('/', this.baseProductsControllers.listAll);
 
     return this.routes;
   }

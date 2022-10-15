@@ -8,7 +8,6 @@ class Product {
     this.list = this.list.bind(this);
     this.create = this.create.bind(this);
     this.delete = this.delete.bind(this);
-    this.listBaseProducts = this.listBaseProducts.bind(this);
   }
 
   async list(req, res) {
@@ -47,15 +46,6 @@ class Product {
     }
   }
 
-  async listBaseProducts(req, res) {
-    try {
-      const response = this.productService.listBaseProducts(req.userType);
-
-      Handle.success(response, res);
-    } catch (error) {
-      Handle.error(error, res);
-    }
-  }
 }
 
 export default Product;

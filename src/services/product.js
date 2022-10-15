@@ -8,7 +8,6 @@ export default class Product {
 
   readDatabase() {
     this.products = JSON.parse(fs.readFileSync('src/models/products.json', 'utf8'));
-    this.base_products = JSON.parse(fs.readFileSync('src/models/base_products.json', 'utf-8'));
   }
 
   listFiltered(filter) {
@@ -99,13 +98,6 @@ export default class Product {
     return { sucess: true };
   }
 
-  listBaseProducts(type) {
-    if (type !== 'produtor') throw Handle.exception('UNAUTHORIZED ACESS');
 
-    const products = this.base_products.data;
 
-    if (!products) throw Handle.exception('NOT_FOUND');
-
-    return products;
-  }
 }
