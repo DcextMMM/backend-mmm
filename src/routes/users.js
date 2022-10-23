@@ -17,6 +17,7 @@ class User {
 
     this.routes.use(AuthMiddleware);
 
+    this.routes.get('/user', this.userController.find);
     this.routes.put('/user', SchemaValidator.validate(userSchema.update), this.userController.update);
     this.routes.delete('/user', this.userController.delete);
 

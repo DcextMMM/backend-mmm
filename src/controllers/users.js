@@ -9,6 +9,7 @@ class Users {
     this.cadastro = this.cadastro.bind(this);
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   async login(req, res) {
@@ -54,6 +55,15 @@ class Users {
   async delete(req, res) {
     try {
       const response = await this.userService.delete({ id: req.userId, type: req.userType });
+      Handle.success(response, res);
+    } catch (error) {
+      Handle.error(error, res);
+    }
+  }
+
+  async find(req, res) {
+    try {
+      const response = await this.userService.find({ id: req.userId, type: req.userType });
       Handle.success(response, res);
     } catch (error) {
       Handle.error(error, res);

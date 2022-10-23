@@ -141,4 +141,26 @@ export default class Users {
 
     return { sucess: true };
   }
+
+  find(filter) {
+    this.readDatabase();
+
+    let users;
+
+    if (filter.type === 'agronomo') {
+      users = this.agronomo;
+    } else if (filter.type === 'produtor') {
+      users = this.produtor;
+    } else {
+      throw Handle.exception('WRONG_USER_TYPE');
+    }
+
+    const user = users.data.find(user => user.id === data.id);
+
+    if (!user) {
+      throw Handle.exception('LOGIN_OR_PASSWORD_WRONG');
+    }
+
+    return user;
+  }
 }
