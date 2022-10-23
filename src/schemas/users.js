@@ -13,12 +13,9 @@ const schemas = {
       senha: string('Invalid format.').required('Password field is mandatory.').min(6, 'Password length smaller then 6.'),
       cpf: string('Invalid format.').test('check-cpf', 'Invalid cpf.', cpf => !cpf || Validator.checkCpf(cpf)),
       telefone: string('Invalid format.'),
-      endereço: object().shape({
-        rua: string('Invalid format.'),
-        numero: string('Invalid format.'),
-        cep: string('Invalid format.'),
-        extra: string('Invalid format.')
-      }),
+      rua: string('Invalid format.'),
+      numero: string('Invalid format.'),
+      cep: string('Invalid format.'),
       type: string('Invalid format.').required('Type is mandatory.')
     }).noUnknown()
   },
