@@ -63,12 +63,8 @@ export default class Request {
   }
 
   list(filter, meta) {
-    if (meta.type !== 'agronomo')
-      throw Handle.exception('UNAUTHORIZED_ACESS');
-
     this.readDatabase();
-
-    const requests = this.requests.data.filter(request => request.agronomo_id === ~~meta.id);
+    const requests = this.requests.data.filter(request => meta.type === 'agronomo' ? request.agronomo_id === ~~meta.id : request.produtor_id === ~~meta.id);
 
     if (!requests.length)
       throw Handle.exception('NO_REQUESTS');
