@@ -43,7 +43,9 @@ export default class Product {
       return this.listFiltered(filter);
     }
 
-    return this.products.data;
+    const products = this.products.data.filter(product => !product.vendido);
+
+    return products;
   }
 
   find(filter) {
