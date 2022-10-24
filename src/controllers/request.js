@@ -38,6 +38,7 @@ class Request {
 
   async delete(req, res) {
     try {
+      console.log('delete');
       const response = this.requestService.delete(req.filter, { id: req.userId, type: req.userType });
       Handle.success(response, res);
     } catch (error) {

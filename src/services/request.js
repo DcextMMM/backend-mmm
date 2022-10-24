@@ -90,14 +90,15 @@ export default class Request {
   }
 
   delete(filter, meta) {
-    if (meta.type !== 'agronomo' || filter.id !== meta.id)
+    console.log(this.products.data);
+    if (meta.type !== 'agronomo')
       throw Handle.exception('UNAUTHORIZED_ACESS');
 
     this.readDatabase();
 
-    const request = this.requests.data.find(request => request.id === ~~filter.id);
+    const request = this.requests.data.find(request => ~~request.id === ~~filter.id);
 
-    const product = this.products.data.find(product => product.id === request.product_id);
+    const product = this.products.data.find(product => ~~product.id === ~~request.product_id);
 
     if (!product || !request)
       throw Handle.exception('NOT_FOUND');
