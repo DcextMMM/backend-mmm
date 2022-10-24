@@ -155,7 +155,7 @@ export default class Users {
       throw Handle.exception('WRONG_USER_TYPE');
     }
 
-    const user = users.data.find(user => user.id === data.id);
+    const user = users.data.find(user => user.id === filter.id);
 
     if (!user) {
       throw Handle.exception('LOGIN_OR_PASSWORD_WRONG');
